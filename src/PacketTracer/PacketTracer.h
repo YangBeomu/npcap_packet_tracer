@@ -5,7 +5,8 @@
 
 #include "pcap.h"
 #include "ethhdr.h"
-#include "iphdr.h"
+#include "iphdr.hpp"
+#include "tcphdr.hpp"
 
 class PacketTracer
 {
@@ -17,6 +18,6 @@ public:
 	PacketTracer(std::string interfaceTitle);
 	~PacketTracer();
 
-	void ReadPacket(const std::string ip);
+	void ReadPacket(const std::string ip = {}, int protocolType = -1);
 };
 

@@ -29,7 +29,7 @@ int main(int argc, char* argv[], char* env) {
 	PacketTracer pt(interfaceName.c_str());
 
 	while (1) {
-		pt.ReadPacket(sourceIP);
+		pt.ReadPacket({}, IpHdr::PROTOCOL_ID_TYPE::TCP);
 
 		Sleep(100);
 

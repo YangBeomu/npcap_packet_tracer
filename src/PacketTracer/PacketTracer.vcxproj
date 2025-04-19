@@ -167,9 +167,10 @@
   <ItemGroup>
     <ClInclude Include="arphdr.h" />
     <ClInclude Include="ethhdr.h" />
-    <ClInclude Include="iphdr.h" />
+    <ClInclude Include="iphdr.hpp" />
     <ClInclude Include="PacketTracer.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="tcphdr.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

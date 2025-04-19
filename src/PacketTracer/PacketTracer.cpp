@@ -50,24 +50,33 @@ void PacketTracer::ShowPacket() {
 	}
 }
 
-void PacketTracer::ReadPacket(const string sip) {
+void PacketTracer::ReadPacket(const string sip, int protocolType) {
 	pcap_pkthdr* header{};
 	u_char* packet{};
 
-	if (pcap_next_ex(this->pcap_, &header, (const u_char**)&packet) != 1)
-		return;
+	if (pcap_next_ex(this->pcap_, &header, (const u_char**)&packet) != 1) return;
 
-	packet += sizeof(EthHdr);
-	IpHdr ipHeader(packet);
+	IpHdr ipHeader(packet + sizeof(EthHdr));
 
-	char buf[INET_ADDRSTRLEN]{};
+	if (!sip.empty() && ipHeader.sip().compare(sip) != 0) return;
 
-	inet_ntop(AF_INET, &ipHeader.sIp_, buf, sizeof(buf));
-
-	if (sip.compare(buf) == 0)
-		printf("Find packet \n");
-	else
-		return;
+	cout << "source ip : " << ipHeader.sip() << endl;
+	cout << "destination ip : " << ipHeader.dip() << endl;
+	
+	if (protocolType == -1 || ipHeader.protocolId_ != protocolType) return;
+	
+	switch (protocolType) {
+		case IpHdr::PROTOCOL_ID_TYPE::ICMP: {
+				cout << "icmp detected \n";
+			break;
+		}
+		case IpHdr::PROTOCOL_ID_TYPE::TCP: {
+				cout << "tcp detected \n";
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 

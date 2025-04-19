@@ -38,7 +38,10 @@
     <ClInclude Include="ethhdr.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="iphdr.h">
+    <ClInclude Include="iphdr.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="tcphdr.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
