@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable:4996)
 
 #include <WS2tcpip.h>
 #include <Windows.h>

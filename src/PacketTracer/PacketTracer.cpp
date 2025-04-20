@@ -27,7 +27,7 @@ void PacketTracer::ShowPacket() {
 	pcap_pkthdr* header{};
 	const u_char* packet{};
 
-	try {
+	try{
 		if (pcap_next_ex(this->pcap_, &header, /*(const u_char**)*/&packet) != 1)
 			throw runtime_error("Failed to read packet");
 
@@ -56,12 +56,20 @@ void PacketTracer::ReadPacket(const string sip, int protocolType) {
 
 	if (pcap_next_ex(this->pcap_, &header, (const u_char**)&packet) != 1) return;
 
+	EthHdr* etherHeader = reinterpret_cast<EthHdr*>(packet);
+	/*for (int i = 0; i < 6; i++)
+		printf("%2x:", etherHeader->smac().address[i]);
+	cout << endl;
+	for (int i = 0; i < 6; i++)
+		printf("%2x:", etherHeader->dmac().address[i]);
+	cout << endl;*/
+
 	IpHdr ipHeader(packet + sizeof(EthHdr));
 
 	if (!sip.empty() && ipHeader.sip().compare(sip) != 0) return;
 
-	cout << "source ip : " << ipHeader.sip() << endl;
-	cout << "destination ip : " << ipHeader.dip() << endl;
+	//cout << "source ip : " << ipHeader.sip() << endl;
+	//cout << "destination ip : " << ipHeader.dip() << endl;
 	
 	if (protocolType == -1 || ipHeader.protocolId_ != protocolType) return;
 	
@@ -71,7 +79,10 @@ void PacketTracer::ReadPacket(const string sip, int protocolType) {
 			break;
 		}
 		case IpHdr::PROTOCOL_ID_TYPE::TCP: {
-				cout << "tcp detected \n";
+				//cout << "tcp detected \n";
+			TcpHdr* tcpHeader = reinterpret_cast<TcpHdr*>(packet + sizeof(EthHdr) + ipHeader.len());
+			printf("%d \n", tcpHeader->sPort());
+			printf("%d \n", tcpHeader->dPort());
 			break;
 		}
 		default:

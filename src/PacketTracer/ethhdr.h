@@ -4,9 +4,7 @@
 #include <cstdInt>
 #include <WS2tcpip.h>
 
-struct Mac {
-	UCHAR address[6];
-};
+#include "mac.h"
 
 #pragma pack(push, 1)
 struct EthHdr final {

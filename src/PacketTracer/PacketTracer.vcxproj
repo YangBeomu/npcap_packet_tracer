@@ -160,14 +160,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ip.cpp" />
+    <ClCompile Include="mac.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketTracer.cpp" />
     <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="arphdr.h" />
+    <ClInclude Include="arphdr.hpp" />
     <ClInclude Include="ethhdr.h" />
+    <ClInclude Include="ip.h" />
     <ClInclude Include="iphdr.hpp" />
+    <ClInclude Include="mac.h" />
     <ClInclude Include="PacketTracer.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="tcphdr.hpp" />

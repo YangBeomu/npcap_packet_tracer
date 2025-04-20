@@ -1,10 +1,9 @@
 #pragma once
 
-#include <uchar.h>
-#include <cstdint>
-#include <WS2tcpip.h>
+#include "WS2tcpip.h"
+#include <cstring>
 
-typedef uint32_t Ip;
+#include "ip.h"
 
 #pragma pack(push, 1)
 typedef struct IP_HEADER {
@@ -32,28 +31,28 @@ typedef struct IP_HEADER {
     Ip sIp_;
     Ip dIp_;
 
-    IP_HEADER(uint8_t* data) { memcpy_s(this, sizeof(IP_HEADER), data, sizeof(IP_HEADER)); }
+    IP_HEADER(uint8_t* data) { memcpy(this, data, sizeof(IP_HEADER)); }
 
     uint8_t version() { return (version_headerLen_ & 0b11110000) >> 4; }
+    uint16_t totalLen() { return ntohs(totalPacketLen_); }
     uint8_t len() { return (version_headerLen_ & 0b00001111) * 4; }
-    uint8_t flags() { return (ntohs(flags_fragOffset_) & 0b1110000000000000) >> 13; };
-    uint16_t fragOffset() { return ntohs(flags_fragOffset_) & 0b0001111111111111; };
+    uint8_t flags() { return (ntohs(flags_fragOffset_) & 0b1110000000000000) >> 13; }
+    uint16_t fragOffset() { return ntohs(flags_fragOffset_) & 0b0001111111111111; }
 
     std::string sip() {
         char buf[INET_ADDRSTRLEN]{};
 
         inet_ntop(AF_INET, &sIp_, buf, sizeof(buf));
         return std::string(buf);
-    };
+    }
 
     std::string dip() {
         char buf[INET_ADDRSTRLEN]{};
 
         inet_ntop(AF_INET, &dIp_, buf, sizeof(buf));
         return std::string(buf);
-    };
+    }
 
 }IpHdr;
-#pragma pack(pop)
-
 typedef IpHdr* PIpHdr;
+#pragma pack(pop)

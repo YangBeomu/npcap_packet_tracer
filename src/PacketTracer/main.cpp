@@ -31,7 +31,7 @@ int main(int argc, char* argv[], char* env) {
 	while (1) {
 		pt.ReadPacket({}, IpHdr::PROTOCOL_ID_TYPE::TCP);
 
-		Sleep(100);
+		//Sleep(100);
 
 		if (_kbhit())
 			if (_getch() == 27) break;

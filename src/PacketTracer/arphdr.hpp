@@ -1,13 +1,9 @@
 #pragma once
 
-#include <cstdint>
-#include <Windows.h>
+#include <WS2tcpip.h>
 
-typedef uint32_t Ip;
-
-struct Mac {
-    UCHAR address[6];
-};
+#include "mac.h"
+#include "ip.h"
 
 #pragma pack(push, 1)
 typedef struct ARP_HEDAER final {
@@ -22,14 +18,28 @@ typedef struct ARP_HEDAER final {
     uint16_t opCode_;
     Mac smac_;
     Ip sip_;
-    Mac dmac_;
+    Mac tmac_;
     Ip dip_;
 
-    Mac dmac() { return dmac_; }
+    Mac tmac() { return tmac_; }
     Mac smac() { return smac_; }
     uint8_t hardwareSize() { return hardwareSize_; }
     uint8_t protocolSize() { return protocolSize_; }
-    uint16_t opCode() {return opCode_; }
+    uint16_t opCode() {return ntohs(opCode_); }
+
+    std::string sip() {
+        char buf[INET_ADDRSTRLEN]{};
+
+        inet_ntop(AF_INET, &sip_, buf, sizeof(buf));
+        return std::string(buf);
+    }
+
+    std::string dip() {
+        char buf[INET_ADDRSTRLEN]{};
+
+        inet_ntop(AF_INET, &dip_, buf, sizeof(buf));
+        return std::string(buf);
+    }
 
     //opcode types
     typedef enum OPCODE_TYPE{

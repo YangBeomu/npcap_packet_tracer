@@ -1,10 +1,10 @@
 #pragma once
 
-#include <uchar.h>
 #include <cstdint>
-#include <string>
+#include <cstring>
 #include <WS2tcpip.h>
 
+#pragma pack(push, 1)
 typedef struct TCP_HEADER {
 	uint16_t sPort_;
 	uint16_t dPort_;
@@ -15,9 +15,11 @@ typedef struct TCP_HEADER {
 	uint16_t checksum;
 	uint16_t urgentPointer;
 
-	TCP_HEADER(uint8_t* data) { memcpy_s(this, sizeof(TCP_HEADER), data, sizeof(TCP_HEADER)); };
-	uint16_t sPort() { return ntohs(sPort_); };
-	uint16_t dPort() { return ntohs(dPort_); };
-	uint8_t len() { return ntohs(headerLen_reserve_flags_) & 0b1111000000000000 >> 12; };
-	uint8_t flags() { return ntohs(headerLen_reserve_flags_) & 0b0000000000111111; };
+    TCP_HEADER(uint8_t* data) { memcpy(this, data, sizeof(TCP_HEADER)); }
+    uint16_t sPort() { return ntohs(sPort_); }
+    uint16_t dPort() { return ntohs(dPort_); }
+    uint8_t len() { return ((ntohs(headerLen_reserve_flags_) & 0b1111000000000000) >> 12) * 5; }
+    uint8_t flags() { return ntohs(headerLen_reserve_flags_) & 0b0000000000111111; }
 }TcpHdr;
+typedef TcpHdr* PTcpHdr;
+#pragma pack(pop)
