@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WS2tcpip.h"
+//#include <arpa/inet.h>
 #include <cstring>
 
 #include "ip.h"
@@ -15,12 +15,19 @@ typedef struct IP_HEADER {
         IPv4,
         ST,
         TCP,
+        UDP = 17,
+    };
+
+    enum IP_FLAGS_TYPE {
+        RESORVED = 0,
+        DF = (1<<14),
+        MF = (1<<13)
     };
 
     uint8_t version_headerLen_;
     uint8_t TOS_;
     uint16_t totalPacketLen_;
-    uint16_t id;
+    uint16_t id_;
 
     uint16_t flags_fragOffset_;
 
@@ -28,8 +35,8 @@ typedef struct IP_HEADER {
     uint8_t protocolId_;
     uint16_t headerChecksum_;
 
-    Ip sIp_;
-    Ip dIp_;
+    Ip sip_;
+    Ip dip_;
 
     IP_HEADER(uint8_t* data) { memcpy(this, data, sizeof(IP_HEADER)); }
 
@@ -42,17 +49,20 @@ typedef struct IP_HEADER {
     std::string sip() {
         char buf[INET_ADDRSTRLEN]{};
 
-        inet_ntop(AF_INET, &sIp_, buf, sizeof(buf));
+        inet_ntop(AF_INET, &sip_, buf, sizeof(buf));
         return std::string(buf);
     }
 
     std::string dip() {
         char buf[INET_ADDRSTRLEN]{};
 
-        inet_ntop(AF_INET, &dIp_, buf, sizeof(buf));
+        inet_ntop(AF_INET, &dip_, buf, sizeof(buf));
         return std::string(buf);
     }
 
+    //std::string sip() { return std::string(ntohl(sip_)); }
+    //std::string dip() {return std::string(ntohl(dip_)); }
+
 }IpHdr;
-typedef IpHdr* PIpHdr;
+typedef IpHdr *PIpHdr;
 #pragma pack(pop)

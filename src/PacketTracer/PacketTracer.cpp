@@ -37,9 +37,9 @@ void PacketTracer::ShowPacket() {
 
 		char buf[INET_ADDRSTRLEN]{};
 
-		inet_ntop(AF_INET, &ipHeader->sIp_, buf, sizeof(buf));
+		inet_ntop(AF_INET, &ipHeader->sip_, buf, sizeof(buf));
 		cout << "source ip : " << buf << endl;
-		inet_ntop(AF_INET, &ipHeader->dIp_, buf, sizeof(buf));
+		inet_ntop(AF_INET, &ipHeader->dip_, buf, sizeof(buf));
 		cout << "destination ip : " << buf << endl;
 
 	}

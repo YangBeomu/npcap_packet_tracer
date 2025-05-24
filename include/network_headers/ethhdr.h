@@ -1,9 +1,6 @@
 #pragma once
 
-#include <uchar.h>
-#include <cstdInt>
-#include <WS2tcpip.h>
-
+//#include <arpa/inet.h>
 #include "mac.h"
 
 #pragma pack(push, 1)

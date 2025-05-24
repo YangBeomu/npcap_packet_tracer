@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <cstdint>
 #include <cstring>
 #include <string>
@@ -20,7 +21,7 @@ struct Mac final {
 	Mac& operator = (const Mac& r) { memcpy(this->mac_, r.mac_, Size); return *this; }
 
 	// casting operator
-	explicit operator uint8_t*() const { return const_cast<uint8_t*>(mac_); }
+	explicit operator uint8_t* () const { return const_cast<uint8_t*>(mac_); }
 	explicit operator std::string() const;
 
 	// comparison operator
@@ -56,11 +57,11 @@ protected:
 	uint8_t mac_[Size];
 };
 
-//namespace std {
-//	template<>
-//	struct hash<Mac> {
-//		size_t operator() (const Mac& r) const {
-//			return std::_Hash_impl::hash(&r, Mac::Size);
-//		}
-//	};
-//}
+namespace std {
+	template<>
+	struct hash<Mac> {
+		size_t operator() (const Mac& r) const {
+			return hash<Mac>()(r);
+		}
+	};
+};

@@ -1,5 +1,4 @@
 #include "mac.h"
-#include "pch.h"
 
 Mac::Mac(const std::string& r) {
 	std::string s;
